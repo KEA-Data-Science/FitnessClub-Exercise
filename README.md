@@ -1,5 +1,5 @@
 # FitnessClub-Exercise
-Gone out of control to request to print a few lines of text.
+Gone out of control solution to request to print a few lines of text.
 
 
  Initial commit
