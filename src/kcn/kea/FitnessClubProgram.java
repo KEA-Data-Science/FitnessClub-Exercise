@@ -8,7 +8,6 @@ import kcn.kea.fitnessclub.ui.consolemenus.ConsoleMenu;
 import kcn.kea.fitnessclub.ui.consolemenus.EmployeeMenu;
 import kcn.kea.fitnessclub.ui.consolemenus.MainMenu;
 import kcn.kea.fitnessclub.ui.consolemenus.MemberMenu;
-import kcn.kea.util.ClubDummyDataGenerator;
 import kcn.kea.util.DBConnectionManager;
 import kcn.kea.util.GET;
 

@@ -25,6 +25,12 @@ public class ClubDataAccess
     private MemberDAO memberDAO;
     private EmployeeDAO employeeDAO;
     private MonthDAO monthDAO;
+
+    public ICalculateSalary<Employee> getCalculator()
+    {
+        return calculator;
+    }
+
     private ICalculateSalary<Employee> calculator;
 
     public ClubDataAccess(String databaseName, ICalculateSalary<Employee> calculator)

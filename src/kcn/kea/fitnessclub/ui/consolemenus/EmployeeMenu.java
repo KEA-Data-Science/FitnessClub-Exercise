@@ -1,5 +1,6 @@
 package kcn.kea.fitnessclub.ui.consolemenus;
 
+import kcn.kea.fitnessclub.EmployeeSalaryCalculator;
 import kcn.kea.fitnessclub.data.ClubDataAccess;
 import kcn.kea.fitnessclub.abstracts.EmployeeType;
 import kcn.kea.fitnessclub.models.Employee;
@@ -38,7 +39,7 @@ public class EmployeeMenu extends ConsoleMenu implements IMenu<Console>
             ui.show("");
 
             ui.show("\t[1]\tList all instructors");
-            ui.show("\t[2]\tList all instructors");
+            ui.show("\t[2]\tList all administration");
             ui.show("\t[3]\tList all employees");
             ui.show("\t[4]\tFind employee salary");
 
@@ -77,14 +78,14 @@ public class EmployeeMenu extends ConsoleMenu implements IMenu<Console>
 
         // here goes formatting like hereunder...
         String formattedHeadline = String.format("%-5s%-23s%-14s%-18s%-16s",
-                                                 "Person ID", "Name", "CPR", "Employment Type", "Base Amount");
+                                                 "ID", "Name", "CPR", "Employment Type", "Base Amount");
         ui.show(formattedHeadline);
 
         for(Map.Entry<Integer, Employee> e : employeeMap.entrySet())
         {
             if(e.getValue().getEmployementType() == type || type == EmployeeType.ERROR)
             {
-                ui.show(e.getValue().toString() + "   " + e.getValue().getEmployementType());
+                ui.show(e.getValue().toString());
             }
         }
 
@@ -107,18 +108,25 @@ public class EmployeeMenu extends ConsoleMenu implements IMenu<Console>
             {
                 ui.show("");
                 ui.show("Employee found:");
+
+                String formattedHeadlineEmployee = String.format("%-5s%-23s%-14s%-18s%-16s",
+                                                         "ID", "Name", "CPR", "Employment Type", "Base Amount");
+                ui.show(formattedHeadlineEmployee);
+
                 ui.show(employee.toString());
 
-                String formattedHeadline = String.format("%-10s%-10s%-14s%-14s%-15s",
+                String formattedHeadlineMonth = String.format("%-10s%-10s%-14s%-14s%-15s",
                                                          "Month ID", "Person ID", "Year", "Month", "Noted hours");
-                ui.show(formattedHeadline);
+                ui.show(formattedHeadlineMonth);
+
+                EmployeeSalaryCalculator salaryCalculator = new EmployeeSalaryCalculator();
 
                 var monthMap = dataAccess.getMonthDAO().readAll();
                 for(Map.Entry<Triplet<Integer, Integer, Integer>, Month> m : monthMap.entrySet())
                 {
                     if(m.getValue().getPersonID() == idChoice)
                     {
-                        ui.show(m.getValue().toString()); // prints the month
+                        ui.show(m.getValue().toString() + "PAID:  " + salaryCalculator.calculateSalary(employee,m.getKey())); // prints the month
                     }
                 }
 

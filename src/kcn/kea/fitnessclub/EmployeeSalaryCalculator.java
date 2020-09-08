@@ -1,50 +1,60 @@
 package kcn.kea.fitnessclub;
 
+import kcn.kea.fitnessclub.abstracts.EmployeeType;
 import kcn.kea.fitnessclub.abstracts.ICalculateSalary;
+import kcn.kea.fitnessclub.data.mysqlDAO.MonthDAO;
 import kcn.kea.fitnessclub.models.Employee;
+import kcn.kea.util.javatuples.Triplet;
 
 import java.time.LocalDateTime;
 
-/** This calculator is NOT implemented properly
- * */
+/**
+ * This calculator is NOT implemented properly
+ */
 public class EmployeeSalaryCalculator implements ICalculateSalary<Employee>
 {
+    private MonthDAO monthDAO;
 
-    private double calculateAdministratorSalary(Employee employee)
+    public EmployeeSalaryCalculator()
     {
-        return employee.getBaseAmount();
+        monthDAO = new MonthDAO();
     }
 
     @Override
     public double calculateSalaryForCurrentMonth(Employee employee)
     {
-        /* Switching on EmploymentType, ehm yup */
-        switch(employee.getEmployementType())
-        {
-            case INSTRUCTOR:
-                return calculateInstructorSalary(employee);
-            case ADMINISTRATION:
-                return calculateAdministratorSalary(employee);
-        }
-        /** Returning 0 if no WorkMonth mathced with current place in time. */
-        return 0;
-    }
-
-    private double calculateInstructorSalary(Employee employee)
-    {
         LocalDateTime date = LocalDateTime.now();
 
-//        for(Month m : employee.getMonths())
-//        {
-//            if(m.getMonth() == date.getMonthValue() && m.getYear() == date.getYear())
-//            {
-//                /* here the base amount is interpreted as the hourly par */
-//                double salary = employee.getBaseAmount() * m.getNotedHours();
-//                return salary;
-//            }
-//        }
+        var currentMonthTriplet = new Triplet<Integer, Integer, Integer>(employee.getID(),
+                                                                         date.getYear(),
+                                                                         date.getMonth().getValue());
+        return calculateSalary(employee, currentMonthTriplet);
 
-        return -1;
+    }
+
+    public double calculateSalary(Employee employee, Triplet<Integer, Integer, Integer> personIdYearMonth)
+    {
+        double salary = -1;
+        if(employee.getEmployementType() == EmployeeType.ERROR){return salary;}
+
+        double baseAmount = employee.getBaseAmount();
+
+        LocalDateTime date = LocalDateTime.now();
+
+        var fcMonth = monthDAO.read(personIdYearMonth);
+
+        /* here the base amount is interpreted as the hourly par */
+        if(employee.getEmployementType() == EmployeeType.INSTRUCTOR)
+        {
+            salary = baseAmount * fcMonth.getNotedHours();
+        }
+
+        return salary;
+    }
+
+    private double calculateAdministratorSalary(Employee employee)
+    {
+        return employee.getBaseAmount();
     }
 }
 
