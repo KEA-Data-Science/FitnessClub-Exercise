@@ -69,7 +69,7 @@ public class EmployeeMenu extends ConsoleMenu implements IMenu<Console>
     private void listEmployee(EmployeeType type)
     {
         ui.show("");
-        ui.show("\tListing " + type + " all members basic info:");
+        ui.show("\tListing all " + type + "s basic info:");
         ui.show("");
 
         HashMap<Integer, Employee> employeeMap = dataAccess.getEmployeeDAO().readAll();

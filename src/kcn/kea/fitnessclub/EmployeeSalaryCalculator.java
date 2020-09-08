@@ -4,6 +4,7 @@ import kcn.kea.fitnessclub.abstracts.EmployeeType;
 import kcn.kea.fitnessclub.abstracts.ICalculateSalary;
 import kcn.kea.fitnessclub.data.mysqlDAO.MonthDAO;
 import kcn.kea.fitnessclub.models.Employee;
+import kcn.kea.fitnessclub.models.Month;
 import kcn.kea.util.javatuples.Triplet;
 
 import java.time.LocalDateTime;
@@ -40,15 +41,16 @@ public class EmployeeSalaryCalculator implements ICalculateSalary<Employee>
         double baseAmount = employee.getBaseAmount();
 
         LocalDateTime date = LocalDateTime.now();
-
-        var fcMonth = monthDAO.read(personIdYearMonth);
+        Month fcMonth = monthDAO.read(personIdYearMonth);
 
         /* here the base amount is interpreted as the hourly par */
         if(employee.getEmployementType() == EmployeeType.INSTRUCTOR)
         {
             salary = baseAmount * fcMonth.getNotedHours();
+            return salary;
         }
 
+        salary = employee.getBaseAmount();
         return salary;
     }
 
