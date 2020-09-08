@@ -5,8 +5,7 @@ import kcn.kea.fitnessclub.models.Employee;
 
 import java.time.LocalDateTime;
 
-/** This calculator is implemented to handle salaries of types Instructor and Administrator
- * as of 2020 9 3 :p
+/** This calculator is NOT implemented properly
  * */
 public class EmployeeSalaryCalculator implements ICalculateSalary<Employee>
 {
